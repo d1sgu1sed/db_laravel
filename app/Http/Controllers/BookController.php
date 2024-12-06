@@ -11,9 +11,10 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::whereNull('deleted_at')->get();
         return view('books.index', compact('books'));
     }
+
 
 
     public function create()
@@ -57,6 +58,12 @@ class BookController extends Controller
     public function show(Book $book)
     {
         return view('books.show', compact('book'));
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
     }
 
 
